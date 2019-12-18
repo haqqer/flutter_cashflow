@@ -1,23 +1,30 @@
+import 'package:cashflow/main.dart';
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:cashflow/models/cash.dart';
 import 'package:cashflow/helpers/dbhelper.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:cashflow/pages/cashform.dart';
 
 class Riwayat extends StatefulWidget {
-  Riwayat({ Key key }) : super(key: key);
+  final ValueChanged<int> changeTab;
+  Riwayat({Key key, this.changeTab}) : super(key: key);
+
   @override
-  RiwayatState createState() => RiwayatState();
+  RiwayatState createState() => RiwayatState(this.changeTab);
 }
 
 class RiwayatState extends State<Riwayat> with SingleTickerProviderStateMixin{
   DbHelper dbHelper = DbHelper();
+  ValueChanged<int> changeTab;
   int count = 0;
   Cash cash;
   List<Cash> cashList;
   int filter = 3;
-
-
+  String _getCash = 'test';
+  Cash get getCash => cash;
   TabController tabController;
+
+  RiwayatState(this.changeTab);
 
   void handleTabSelection() {
     setState(() {
@@ -123,7 +130,11 @@ class RiwayatState extends State<Riwayat> with SingleTickerProviderStateMixin{
               },
             ),
             onTap: () async {
-              print('value');
+              setState(() {
+                this.cash = this.cashList[index];
+              });
+              changeTab(2);
+              // Navigator.push(context, MaterialPageRoute(builder: (context) => CashForm(cash: this.cashList[index])));
                 // var cash = await navigateToEntryForm(context, this.cashList[index]);
                 // if (cash != null) editCash(cash);              
             },

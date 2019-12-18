@@ -20,8 +20,8 @@ class CategoryState extends State<CategoryPage> {
   void initState() {
     // TODO: implement initState
     // tabController = TabController(vsync: this, length: 3);
-    super.initState();
     updateListView();
+    super.initState();
   }
 
   @override
@@ -43,7 +43,7 @@ class CategoryState extends State<CategoryPage> {
     );
   }
   Widget allTransaction(TextStyle textStyle) {
-    if(categoryList == null) {
+    if(category != null && categoryList.length < 1) {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

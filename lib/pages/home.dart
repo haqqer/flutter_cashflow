@@ -1,11 +1,10 @@
+import 'package:cashflow/main.dart';
+import 'package:flutter/material.dart';
 import 'package:cashflow/helpers/dbhelper.dart';
 import 'package:cashflow/pages/cashform.dart';
 import 'package:cashflow/pages/categorypage.dart';
 import 'package:cashflow/pages/riwayat.dart';
-import 'package:flutter/material.dart';
-import 'dart:async';
-import 'package:cashflow/models/contact.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:cashflow/models/cash.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -14,6 +13,8 @@ class Home extends StatefulWidget {
 
 class HomeState extends State<Home> {
   DbHelper dbHelper = DbHelper();
+  GlobalKey<CashFormState> _cashFormState;
+  Cash cash;
   int count = 0;
   int _selectedTabIndex = 0;  
   List<Widget> pages;
@@ -27,11 +28,12 @@ class HomeState extends State<Home> {
   ];
   @override
   void initState() {
+    _cashFormState = GlobalKey();
     pages = <Widget>[
       MainPage(),
       CategoryPage(),
-      CashForm(changeTab: onNavbarTapped),
-      Riwayat(),
+      CashForm(key: key, changeTab: onNavbarTapped),
+      Riwayat(key: riwayatKey, changeTab: onNavbarTapped),
       Text('Tentang')
     ];      
     _currentPage = MainPage();
@@ -83,6 +85,7 @@ class HomeState extends State<Home> {
       ),
       body: _currentPage,
       bottomNavigationBar: BottomNavigationBar(
+        showUnselectedLabels: true,
         items: _bottomNavbarItems,
         currentIndex: _selectedTabIndex,
         onTap: onNavbarTapped,
